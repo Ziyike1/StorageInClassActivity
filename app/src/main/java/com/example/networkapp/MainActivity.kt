@@ -66,12 +66,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun downloadComic (comicId: String) {
+    private fun downloadComic(comicId: String) {
         val url = "https://xkcd.com/$comicId/info.0.json"
-        requestQueue.add (
-            JsonObjectRequest(url, {showComic(it)}, {
-            })
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET, url, null, { response ->
+                showComic(response)
+                saveComic(response)
+            }, {}
         )
+        requestQueue.add(jsonObjectRequest)
     }
 
     private fun showComic (comicObject: JSONObject) {
